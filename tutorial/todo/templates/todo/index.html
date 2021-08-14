@@ -1,0 +1,14 @@
+{% if todolists %}
+<ul>
+    <div style="height: 25; width : 300; display:flex; justify-content: flex-end; color: rgb(0, 0, 0); margin: 10; padding: 10;">Create List<a href="/todo/create/"><button> + </button></a></div>
+    {% for todolist in todolists %}
+    <div style="height: 25; width : 300; display:flex; justify-content: space-between; background-color: aliceblue; margin: 10; padding: 10;">
+        <div><li><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a></li></div>
+        
+        <div><a href="/todo/{{todolist.id}}/delete"><button> X </button></a></div>
+        <!-- <li> <div><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a> </div><div><button> X </button></div></li> -->
+    </div>
+    
+    {% endfor %}
+</ul>
+{% endif %}

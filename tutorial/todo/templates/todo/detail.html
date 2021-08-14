@@ -1,0 +1,24 @@
+<h1>{{todolists.list_name}} <a href="{% url 'todo:list_update' list_id=todolists.id title=None %}"><button> Add+ </button></a></h1>
+
+<ul>
+    {% for item in items_list %}
+    <!-- <li>
+        {{item.title}}: <br> Date : {{item.due_date}}, <br> Completed: {{item.checked}}
+        <a href="{% url 'todo:list_update' list_id=todolists.id title=item.title %}"><button> Update </button></a>
+
+    </li> -->
+    <div style="height: 50; width : 300; display:flex; justify-content: space-between; background-color: aliceblue; margin: 10; padding: 10;">
+        <div><li>{{item.title}}: <br> Date : {{item.due_date}}, <br> Completed: {{item.checked}}
+            <a href="{% url 'todo:list_update' list_id=todolists.id title=item.title %}"><button> Update </button></a>
+    </li></div>
+        
+        <div><a href="/todo/{{todolists.id}}/{{item.title}}/delete"><button> X </button></a></div>
+        <!-- <li> <div><a href="/todo/{{todolist.id}}">{{todolist.list_name}}</a> </div><div><button> X </button></div></li> -->
+    </div>
+
+    {% endfor %}
+</ul>
+
+
+
+

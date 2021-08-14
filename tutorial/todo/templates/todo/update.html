@@ -1,0 +1,18 @@
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+    
+        <h1>Update List</h1>
+        <input type="text" name="title" id="title" >
+        <label for="title"> Title</label><br>
+        <input type="datetime-local" name="date" id="date">
+        <label for="date"> Date and time</label><br>
+        <!-- <input type="text" name="time" id="time"> -->
+        <input type="checkbox" name="checked" id="checked">
+        <label for="checked" value="True"> Completed</label><br>
+    
+        <input type="submit">
+    </fieldset>
+    
+    
+    </form>
