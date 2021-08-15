@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,detail,create,update,delete,deleteitem
+from .views import index,detail,create,update,delete,deleteitem,listname
 app_name = 'todo'
 urlpatterns = [
     path('' , index , name='index'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:list_id>/<str:title>/update/' , update , name= 'list_update'),
     path('<int:list_id>/delete/' , delete , name='list_delete'),
     path('<int:list_id>/<str:title>/delete/' , deleteitem , name='list_deleteitem'),
+    path('<int:list_id>/listname/' , listname , name='list_name'),
 ]

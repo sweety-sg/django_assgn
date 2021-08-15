@@ -1,4 +1,4 @@
-<h1>{{todolists.list_name}} <a href="{% url 'todo:list_update' list_id=todolists.id title=None %}"><button> Add+ </button></a></h1>
+<h1>{{todolists.list_name}} <a href="{% url 'todo:list_name' list_id=todolists.id %}"><button> Change Name </button></a><a href="{% url 'todo:list_update' list_id=todolists.id title=None %}"><button> Add+ </button></a></h1>
 
 <ul>
     {% for item in items_list %}

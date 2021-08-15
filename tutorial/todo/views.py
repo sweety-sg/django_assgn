@@ -13,8 +13,6 @@ def index(request) :
         # 'todoitems' : items
     }
     
-    # output = ', '.join(item.title for item in list_items)
-    # return HttpResponse("index page!")
     return render(request , 'todo/index.html' , context)
 
 def detail(request, list_id):
@@ -35,8 +33,12 @@ def create(request):
     if request.method =='GET':
         return render(request, 'todo/createlist.html')
 
-    name = request.POST['name']
-    TodoList.objects.create(list_name = name)
+    name = request.POST.get('name', None)
+    if(name is not None):
+        TodoList.objects.create(list_name = name)
+    else:
+        raise Http404("List name cannot be empty")
+
     lists = TodoList.objects.all()
     context = {
         'todolists' : lists ,
@@ -44,6 +46,10 @@ def create(request):
     return redirect('/todo/')
 
 def update(request,list_id,title):
+    try:
+        lists = TodoList.objects.get(id=list_id)
+    except TodoList.DoesNotExist:
+        raise Http404("this list does not exist")
     lists = TodoList.objects.get(id = list_id)
     # item = TodoItem.objects.get(todo_list = lists)
     context = {
@@ -53,30 +59,57 @@ def update(request,list_id,title):
     if request.method =='GET':
         return render(request, 'todo/update.html', context)
 
-    new_title = request.POST['title']
-    date = request.POST['date']
-    # time = request.POST['time']
+    new_title = request.POST.get('title' , None)
+    date = request.POST.get('date',None )
     check = request.POST.get('checked' , False)
     if check=='on' :
         check = True
-
-    if(TodoItem.objects.filter(todo_list = lists, title= title)) :
-        TodoItem.objects.filter(todo_list = lists, title= title).update(title = new_title, due_date= date, checked= check )
+    if(new_title and date is not None):
+        if(TodoItem.objects.filter(todo_list = lists, title= title)) :
+            TodoItem.objects.filter(todo_list = lists, title= title).update(title = new_title, due_date= date, checked= check )
+        else:
+            TodoItem.objects.create(todo_list = lists , title = new_title, due_date= date, checked= check )
     else:
-        TodoItem.objects.create(todo_list = lists , title = new_title, due_date= date, checked= check )
+        raise Http404("invalid title and date")
 
     return redirect('/todo/')
 
 
 def delete(request, list_id):
-    TodoList.objects.filter(id= list_id).delete()
+    try:
+        temp = TodoList.objects.filter(id= list_id)
+    except TodoList.DoesNotExist:
+        raise Http404("this list does not exist")
+    temp.delete()
     return redirect('/todo/')
 
 def deleteitem(request,list_id,title):
-    lists = TodoList.objects.get(id = list_id)
-    item = TodoItem.objects.get(todo_list = lists, title= title)
+    try:
+        lists = TodoList.objects.get(id = list_id)
+        item = TodoItem.objects.get(todo_list = lists, title= title)
+    except:
+        raise Http404("this item does not exist")
+    
     item.delete()
     return redirect('/todo/')
+
+def listname(request, list_id):
+    if request.method =='GET':
+        return render(request, 'todo/listname.html')
+
+    try:
+        lists = TodoList.objects.get(id=list_id)
+    except TodoList.DoesNotExist:
+        raise Http404("this list does not exist")
+    name = request.POST.get('name', None)
+    if(name is not None):
+        lists.update(list_name = name)
+    else:
+        raise Http404("List name cannot be empty")
+    
+    return redirect('/todo/')
+    
+
 
 
 
